@@ -1,9 +1,9 @@
-
+// Wait for DOM to be ready
 document.addEventListener("DOMContentLoaded", function () {
 
   var snap, octapad, input, player;
 
-  // Setup Snap.svg and load Octapad's image
+  // Setup Snap.svg, load Octapad's SVG image and size it to 90%
   snap = Snap(window.innerWidth, window.innerHeight);
   octapad = snap.group();
   Snap.load("images/octapad.svg", function (image) {
@@ -23,16 +23,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Note number to sample mapping
     var sampleMap = {
-      48: "samples/tambourine.wav",  // PAD1
-      45: "samples/bongolo.wav",     // PAD2
-      41: "samples/bongohi.wav",     // PAD3
-      51: "samples/shaker.wav",      // PAD4
-      35: "samples/snare.wav",       // PAD5
-      38: "samples/bass.wav",        // PAD6
-      42: "samples/hit.wav",         // PAD7
-      49: "samples/hat.wav"          // PAD8
+      48: "samples/tom1.wav",         // PAD1
+      45: "samples/tom2.wav",         // PAD2
+      41: "samples/tom3.wav",         // PAD3
+      51: "samples/crash.wav",        // PAD4
+      35: "samples/kick.wav",         // PAD5
+      38: "samples/snare-clap.wav",   // PAD6
+      42: "samples/let-s-do-it.wav",  // PAD7
+      49: "samples/hat-closed.wav"    // PAD8
     };
 
+    // Create sample player and map output to master
     player = new Tone.MultiPlayer(sampleMap, addInputListener).toMaster();
 
   }
@@ -40,6 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Add callback triggered when receiving MIDI data
   function addInputListener() {
 
+    // Listen to MIDI 'note on' events
     input.addListener('noteon', "all", function(e) {
 
       // Play sound (buffer to play, delay, offset inside buffer, duration, pitch shift, gain)
